@@ -6,11 +6,13 @@
 /*   By: sumedai <sumedai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:54:08 by sumedai           #+#    #+#             */
-/*   Updated: 2025/02/22 19:19:58 by sumedai          ###   ########.fr       */
+/*   Updated: 2025/02/26 14:38:33 by sumedai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "../includes/minitalk.h"
+
+t_sigl sigl;
 
 // struct sigaction 
 //{
@@ -21,50 +23,33 @@
 //     void     (*sa_restorer)(void); // 今はあんま使われてないらしい
 // };
 
-void signal_handler(int signal)
-{
-    static int bits;
-    static char let;
-    
-    if (signal == SIGUSR1)
-        let |= (1 << bits);
-    bits++;
-    if (bits == 8)
-    {
-        write(1, &let, 1);
-        bits = 0;
-        let = 0;
-    }
-}
-
 int main(void)
 {
     pid_t pid;
-    struct sigaction sa;
-
+    
+    
+    sigl.ch = 0;
+    sigl.ch2 = 0;
+    sigl.ans = 0;
     pid = getpid();
-    if (pid == -1)
+    if (pid <= 0)
     {
-        perror("pid");
+        ft_printf("Error: PID faliure");
         exit(1);
     }
-    printf("pid:%d\n",pid);
-    if (-1 == sigemptyset(&sa.sa_mask))
+    ft_printf("PID:%d\n",pid);
+    ft_printf("waiting for client\n");
+    set_act();
+    while (42)
     {
-        perror("sigemptyset");
-        exit(1);
-    }
-    sa.sa_handler = signal_handler;
-    sa.sa_flags = 0;
-    if (-1 == sigaction(SIGUSR1, &sa, NULL) 
-    || -1 == sigaction(SIGUSR2, &sa, NULL))
-    {
-        perror("sigaction");
-        exit(1);
-    }
-    while (1)
-    {
-        pause();
+        pid = ccal();
+        if (pid == -1)
+        {
+            kill(sigl.pid, SIGUSR1);
+            write(1, "\n", 1);
+            sigl.ch = 0;
+            sigl.ch2 = 0;
+        }
     }
     return (0);
 }

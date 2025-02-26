@@ -1,56 +1,35 @@
 NAME = server
 NAME2 = client
-SRC_SERVER = server.c ft_atoi.c
-SRC_CLIENT = client.c ft_atoi.c
+SER_DIR = ./srcs_ser
+CLI_DIR = ./srcs_cli
+SRC_SER = $(SER_DIR)/server.c $(SER_DIR)/byte.c $(SER_DIR)/support.c
+OBJ_SER = $(SRC_SER:$(SER_DIR)/%.c=$(SER_DIR)/%.o)
+SRC_CLI = $(CLI_DIR)/client.c
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
+LINKS = -I./pirntf/includes -L./printf -lftprintf
 RM = rm -fr
 
 all: $(NAME) $(NAME2)
 
-$(NAME2):$(SRC_CLIENT)
-	$(CC) $(CFLAGS) -o $(NAME2) $(SRC_CLIENT)
+$(SER_DIR)/%.o : $(SER_DIR)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME):$(SRC_SERVER)
-	$(CC) $(CFLAGS) -o $(NAME) $(SRC_SERVER)
+$(NAME): $(OBJ_SER)
+	$(MAKE) -C printf/ 
+	$(CC) $(CFLAGS) $(LINKS) -o $@  $^
+	
+$(NAME2): $(SRC_CLI)
+	$(CC) $(CFLAGS) $(LINKS) -o $@  $^
 
 clean:
-	$(RM) server.o client.o ft_atoi.o
+	@cd printf/ && $(MAKE) clean
+	$(RM) $(OBJ_SER) client.o
 
 fclean: clean
+	@cd printf/ && $(MAKE) fclean
 	$(RM) $(NAME) $(NAME2)
 
 re: fclean all
 
 .PHONY: all clean fclean re
-# # コンパイラとフラグ
-# CC = gcc
-# CFLAGS = -Wall -g
-
-# # ソースファイル
-# SRC_SERVER = server.c
-# SRC_CLIENT = client.c
-
-# # 実行ファイル
-# EXEC_SERVER = server
-# EXEC_CLIENT = client
-
-# # デフォルトターゲット（makeコマンドが引数なしで呼ばれた場合に実行される）
-# all: $(EXEC_SERVER) $(EXEC_CLIENT)
-
-# # serverターゲットのルール
-# $(EXEC_SERVER): $(SRC_SERVER)
-# 	$(CC) $(CFLAGS) -o $(EXEC_SERVER) $(SRC_SERVER)
-
-# # clientターゲットのルール
-# $(EXEC_CLIENT): $(SRC_CLIENT)
-# 	$(CC) $(CFLAGS) -o $(EXEC_CLIENT) $(SRC_CLIENT)
-
-# # cleanターゲット（コンパイル後の中間ファイルを削除）
-# clean:
-# 	rm -f $(EXEC_SERVER) $(EXEC_CLIENT)
-
-# # fcleanターゲット（clean後にオブジェクトファイルも削除）
-# fclean: clean
-# 	rm -f $(EXEC_SERVER) $(EXEC_CLIENT)
-
