@@ -6,7 +6,7 @@
 #    By: sumedai <sumedai@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/03 17:05:07 by sumedai           #+#    #+#              #
-#    Updated: 2024/06/26 16:29:43 by sumedai          ###   ########.fr        #
+#    Updated: 2024/08/24 22:35:33 by sumedai          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,9 @@ SRCS = $(SRCS_DIR)/ft_printf.c\
 	   $(SRCS_DIR)/ft_numchar.c\
 	   $(SRCS_DIR)/ft_numstr.c\
 	   $(SRCS_DIR)/ft_putnbr_base.c\
-	   $(SRCS_DIR)/ft_putunbr_base.c
+	   $(SRCS_DIR)/ft_putunbr_base.c\
+	   $(SRCS_DIR)/ft_putstr_n.c
+
 OBJS = $(SRCS:%.c=%.o)
 CC = cc
 LIBFT_NAME = libft.a

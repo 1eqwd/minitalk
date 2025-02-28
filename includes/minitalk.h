@@ -5,32 +5,32 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sumedai <sumedai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/22 19:16:34 by sumedai           #+#    #+#             */
-/*   Updated: 2025/02/26 14:08:52 by sumedai          ###   ########.fr       */
+/*   Created: 2025/02/27 12:33:26 by sumedai           #+#    #+#             */
+/*   Updated: 2025/02/27 18:17:39 by sumedai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINITALK_H
 # define MINITALK_H
 
-typedef struct s_sigl
+# include "../printf/includes/ft_printf.h"
+# include "../printf/includes/libft.h"
+# include <signal.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+
+typedef enum e_err_code
 {
-    int	ch;
-	int	ch2;
-	int	ans;
-	int	pid;
-}   t_sigl;
+	ERR_ARGC,
+	ERR_SERVER_PID,
+	ERR_MULI_CLIENTS,
+	ERR_SERVER_TERMINATED,
+	ERR_SERVER_RESP_TIMEOUT,
+	ERR_CLIENT_RESP_TIMEOUT,
+	ERR_WRITE,
+}	t_err_code;
 
-#include <signal.h>
-#include "../printf/includes/ft_printf.h"
+void	proc_err(t_err_code err_code);
 
-void	byte1(void);
-void	byte2(void);
-void	byte3(void);
-void	byte4(void);
-void	handler_sigusr1(int sig, siginfo_t *si, void *unused);
-void	handler_sigusr2(int sig, siginfo_t *si, void *unused);
-void	set_act(void);
-void    get_byte(void);
-int     ccal(void);
 #endif

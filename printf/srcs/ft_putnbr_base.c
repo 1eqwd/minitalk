@@ -1,30 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar_num.c                                   :+:      :+:    :+:   */
+/*   ft_putnbr_base.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sumedai <sumedai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/04 22:39:16 by sumedai           #+#    #+#             */
-/*   Updated: 2024/08/05 01:03:16 by sumedai          ###   ########.fr       */
+/*   Created: 2024/08/04 20:39:43 by sumedai           #+#    #+#             */
+/*   Updated: 2024/08/24 22:45:44 by sumedai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
 
-int ft_numchar(const char c)
+int	ft_putnbr_base(long long num, char *base)
 {
-    int ret;
-    
-    ret = 0;
-    ret += write(1, &c, 1);
-    if(ret == -1)
-        return(-1);
-    return (ret);
-}
+	int			ret;
+	long long	base_len;
 
-// int main(void)
-// {
-//     printf("%s %d\n", "a");
-//     return(0);
-// }
+	ret = 0;
+	base_len = (long long)ft_strlen(base);
+	if (num < 0)
+	{
+		ret += ft_numchar('-');
+		num *= -1;
+	}
+	if (num >= base_len)
+		ret += ft_putnbr_base(num / base_len, base);
+	ret += ft_numchar(base[num % base_len]);
+	return (ret);
+}
